@@ -25,9 +25,14 @@ public class ProdutoResource {
 	private ProdutoService service = new ProdutoService();
 	
 	@GET
-	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public List<Produto> getProdutos(){
 		return service.findAll();
+	}
+	
+	@GET
+	@Path("/{id}")
+	public Produto getProduto(@PathParam("id") Long id) {
+		return service.findById(id);
 	}
 	
 	@POST

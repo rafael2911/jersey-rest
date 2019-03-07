@@ -13,6 +13,10 @@ public class ProdutoService {
 		return this.dao.findAll();
 	}
 	
+	public Produto findById(Long id) {
+		return dao.findById(id);
+	}
+	
 	public Produto save(Produto produto) {
 		return dao.save(produto);
 	}
