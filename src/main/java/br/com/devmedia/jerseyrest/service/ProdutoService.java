@@ -17,6 +17,14 @@ public class ProdutoService {
 		return dao.findById(id);
 	}
 	
+	public List<Produto> findByPagination(Integer firstResult, Integer maxResults){
+		return dao.findByPagination(firstResult, maxResults);
+	}
+	
+	public List<Produto> findByName(String name){
+		return dao.findByName(name);
+	}
+	
 	public Produto save(Produto produto) {
 		return dao.save(produto);
 	}

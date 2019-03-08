@@ -2,6 +2,7 @@ package br.com.devmedia.jerseyrest.resource;
 
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -25,7 +26,16 @@ public class ProdutoResource {
 	private ProdutoService service = new ProdutoService();
 	
 	@GET
-	public List<Produto> getProdutos(){
+	public List<Produto> getProdutos(@BeanParam ProdutoFilterBean produtoFilterBean){
+		
+		if(produtoFilterBean.getOffset() >= 0 && produtoFilterBean.getLimit() > 0) {
+			return service.findByPagination(produtoFilterBean.getOffset(), produtoFilterBean.getLimit());
+		}
+		
+		if(produtoFilterBean.getName() != null) {
+			return service.findByName(produtoFilterBean.getName());
+		}
+		
 		return service.findAll();
 	}
 	

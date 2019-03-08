@@ -51,6 +51,49 @@ public class ProdutoDao {
 		
 	}
 	
+	public List<Produto> findByPagination(Integer firstResult, Integer maxResults){
+		EntityManager em = JpaUtil.getEntityManager();
+		List<Produto> produtos = null;
+		
+		try {
+			produtos = em.createQuery("from Produto p", Produto.class)
+					.setFirstResult(firstResult-1)
+					.setMaxResults(maxResults)
+					.getResultList();
+		}catch (RuntimeException ex) {
+			throw new DaoException("Erro ao buscar produtos com paginação: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+		}finally {
+			em.close();
+		}
+		
+		if(produtos.isEmpty()) {
+			throw new DaoException("A paginação não retornou elementos!", ErrorCode.NOT_FOUND.getCode());
+		}
+		
+		return produtos;
+	}
+	
+	public List<Produto> findByName(String name){
+		EntityManager em = JpaUtil.getEntityManager();
+		List<Produto> produtos = null;
+		
+		try {
+			produtos = em.createQuery("select p from Produto p where p.nome like :name", Produto.class)
+					.setParameter("name", "%" + name + "%")
+					.getResultList();
+		}catch (RuntimeException ex) {
+			throw new DaoException("Erro ao buscar produto por nome: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+		}finally {
+			em.close();
+		}
+		
+		if(produtos.isEmpty()) {
+			throw new DaoException("A busca não retornou elementos!", ErrorCode.NOT_FOUND.getCode());
+		}
+		
+		return produtos;
+	}
+	
 	public Produto save(Produto produto) {
 		
 		EntityManager em = JpaUtil.getEntityManager();
