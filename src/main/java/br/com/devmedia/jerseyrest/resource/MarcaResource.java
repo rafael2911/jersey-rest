@@ -15,18 +15,18 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import br.com.devmedia.jerseyrest.model.domain.Produto;
-import br.com.devmedia.jerseyrest.service.ProdutoService;
+import br.com.devmedia.jerseyrest.model.domain.Marca;
+import br.com.devmedia.jerseyrest.service.MarcaService;
 
-@Path("/produtos")
+@Path("/marcas")
 @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-public class ProdutoResource {
-	
-	private ProdutoService service = new ProdutoService();
+public class MarcaResource {
+
+	private MarcaService service = new MarcaService();
 	
 	@GET
-	public List<Produto> getProdutos(@BeanParam FilterBean filterBean){
+	public List<Marca> getMarcas(@BeanParam FilterBean filterBean){
 		
 		if(filterBean.getOffset() >= 0 && filterBean.getLimit() > 0) {
 			return service.findByPagination(filterBean.getOffset(), filterBean.getLimit());
@@ -40,28 +40,33 @@ public class ProdutoResource {
 	}
 	
 	@GET
-	@Path("/{id}")
-	public Produto getProduto(@PathParam("id") Long id) {
-		return service.findById(id);
+	@Path("/{marcaId}")
+	public Response getMarca(@PathParam("marcaId") Long id) {
+		Marca marca = service.findById(id);
+		return Response.ok(marca).build();
 	}
 	
 	@POST
-	public Response salvar(Produto produto) {
-		service.save(produto);
-		return Response.status(Status.CREATED).entity(produto).build();
+	public Response save(Marca marca) {
+		marca = service.save(marca);
+		return Response.status(Status.CREATED)
+				.entity(marca)
+				.build();
 	}
 	
 	@PUT
-	@Path("/{id}")
-	public void atualizar(@PathParam("id") Long id, Produto produto) {
-		produto.setId(id);
-		service.update(produto);
+	@Path("/{marcaId}")
+	public Response update(@PathParam("marcaId") Long id, Marca marca) {
+		marca.setId(id);
+		service.update(marca);
+		return Response.noContent().build();
 	}
 	
 	@DELETE
-	@Path("/{id}")
-	public void remover(@PathParam("id") Long id) {
+	@Path("/{marcaId}")
+	public Response delete(@PathParam("marcaId") Long id) {
 		service.delete(id);
+		return Response.noContent().build();
 	}
 	
 }

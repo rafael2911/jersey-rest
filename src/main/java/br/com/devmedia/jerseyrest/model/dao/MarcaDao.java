@@ -59,7 +59,7 @@ public class MarcaDao {
 		
 		try {
 			marcas = em.createQuery("from Marca m", Marca.class)
-					.setFirstResult(firstResult)
+					.setFirstResult(firstResult-1)
 					.setMaxResults(maxResults)
 					.getResultList();
 		}catch (RuntimeException ex) {

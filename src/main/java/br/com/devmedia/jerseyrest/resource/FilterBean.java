@@ -2,7 +2,7 @@ package br.com.devmedia.jerseyrest.resource;
 
 import javax.ws.rs.QueryParam;
 
-public class ProdutoFilterBean {
+public class FilterBean {
 	
 	private @QueryParam("offset") int offset;
 	private @QueryParam("limit") int limit;
