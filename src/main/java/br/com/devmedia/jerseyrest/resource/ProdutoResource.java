@@ -18,7 +18,6 @@ import javax.ws.rs.core.Response.Status;
 import br.com.devmedia.jerseyrest.model.domain.Produto;
 import br.com.devmedia.jerseyrest.service.ProdutoService;
 
-@Path("/produtos")
 @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 public class ProdutoResource {
@@ -26,42 +25,42 @@ public class ProdutoResource {
 	private ProdutoService service = new ProdutoService();
 	
 	@GET
-	public List<Produto> getProdutos(@BeanParam FilterBean filterBean){
+	public List<Produto> getProdutos(@PathParam("marcaId") Long marcaId, @BeanParam FilterBean filterBean){
 		
 		if(filterBean.getOffset() >= 0 && filterBean.getLimit() > 0) {
-			return service.findByPagination(filterBean.getOffset(), filterBean.getLimit());
+			return service.findByPagination(marcaId, filterBean.getOffset(), filterBean.getLimit());
 		}
 		
 		if(filterBean.getName() != null) {
-			return service.findByName(filterBean.getName());
+			return service.findByName(marcaId, filterBean.getName());
 		}
 		
-		return service.findAll();
+		return service.findAll(marcaId);
 	}
 	
 	@GET
-	@Path("/{id}")
-	public Produto getProduto(@PathParam("id") Long id) {
-		return service.findById(id);
+	@Path("/{produtoId}")
+	public Produto getProduto(@PathParam("produtoId") Long produtoId) {
+		return service.findById(produtoId);
 	}
 	
 	@POST
-	public Response salvar(Produto produto) {
-		service.save(produto);
+	public Response salvar(@PathParam("marcaId") Long marcaId, Produto produto) {
+		service.save(marcaId, produto);
 		return Response.status(Status.CREATED).entity(produto).build();
 	}
 	
 	@PUT
-	@Path("/{id}")
-	public void atualizar(@PathParam("id") Long id, Produto produto) {
-		produto.setId(id);
-		service.update(produto);
+	@Path("/{produtoId}")
+	public void atualizar(@PathParam("marcaId") Long marcaId, @PathParam("produtoId") Long produtoId, Produto produto) {
+		produto.setId(produtoId);
+		service.update(marcaId, produto);
 	}
 	
 	@DELETE
-	@Path("/{id}")
-	public void remover(@PathParam("id") Long id) {
-		service.delete(id);
+	@Path("/{produtoId}")
+	public void remover(@PathParam("produtoId") Long produtoId) {
+		service.delete(produtoId);
 	}
 	
 }

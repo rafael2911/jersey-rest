@@ -69,4 +69,9 @@ public class MarcaResource {
 		return Response.noContent().build();
 	}
 	
+	@Path("/{marcaId}/produtos")
+	public ProdutoResource getProdutoResource() {
+		return new ProdutoResource();
+	}
+	
 }
