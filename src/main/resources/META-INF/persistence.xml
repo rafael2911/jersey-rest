@@ -9,6 +9,7 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
 		<class>br.com.devmedia.jerseyrest.model.domain.Produto</class>
+		<class>br.com.devmedia.jerseyrest.model.domain.Marca</class>
 		
 		<properties>
 			<!-- Driver jdbc para conexao com o Mysql -->
