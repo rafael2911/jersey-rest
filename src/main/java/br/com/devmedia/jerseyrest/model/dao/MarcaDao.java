@@ -18,7 +18,7 @@ public class MarcaDao {
 		try {
 			marcas = em.createQuery("from Marca m", Marca.class).getResultList();
 		}catch (RuntimeException ex) {
-			throw new DaoException("Erro a listar marcas: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro a listar marcas: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
@@ -30,7 +30,7 @@ public class MarcaDao {
 	public Marca findById(Long id) {
 		
 		if(id <= 0) {
-			throw new DaoException("Id deve ser maior que zero!", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("Id deve ser maior que zero!", ErrorCode.BAD_REQUEST);
 		}
 		
 		EntityManager em = JpaUtil.getEntityManager();
@@ -39,13 +39,13 @@ public class MarcaDao {
 		try {
 			marca = em.find(Marca.class, id);
 		}catch (RuntimeException ex) {
-			throw new DaoException("Erro ao buscar marca por id: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao buscar marca por id: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
 		
 		if(marca == null) {
-			throw new DaoException("Marca de Id " + id + " não encontrada!", ErrorCode.NOT_FOUND.getCode());
+			throw new DaoException("Marca de Id " + id + " não encontrada!", ErrorCode.NOT_FOUND);
 		}
 		
 		return marca;
@@ -63,13 +63,13 @@ public class MarcaDao {
 					.setMaxResults(maxResults)
 					.getResultList();
 		}catch (RuntimeException ex) {
-			throw new DaoException("Erro ao buscar marcas com paginação: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao buscar marcas com paginação: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
 		
 		if(marcas.isEmpty()) {
-			throw new DaoException("A paginação não retornou registros!", ErrorCode.NOT_FOUND.getCode());
+			throw new DaoException("A paginação não retornou registros!", ErrorCode.NOT_FOUND);
 		}
 		
 		return marcas;
@@ -86,13 +86,13 @@ public class MarcaDao {
 					.setParameter("name", "%" + name + "%")
 					.getResultList();
 		}catch (RuntimeException ex) {
-			throw new DaoException("Erro ao buscar marcas por nome: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao buscar marcas por nome: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
 		
 		if(marcas.isEmpty()) {
-			throw new DaoException("A busca por nome não retornou registros!", ErrorCode.NOT_FOUND.getCode());
+			throw new DaoException("A busca por nome não retornou registros!", ErrorCode.NOT_FOUND);
 		}
 		
 		return marcas;
@@ -101,7 +101,7 @@ public class MarcaDao {
 	public Marca save(Marca marca) {
 		
 		if(!marcaIsValid(marca)) {
-			throw new DaoException("Marca com dados incompletos!", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("Marca com dados incompletos!", ErrorCode.BAD_REQUEST);
 		}
 		
 		EntityManager em = JpaUtil.getEntityManager();
@@ -112,7 +112,7 @@ public class MarcaDao {
 			em.getTransaction().commit();
 		}catch (RuntimeException ex) {
 			em.getTransaction().rollback();
-			throw new DaoException("Erro ao salvar marca: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao salvar marca: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
@@ -124,11 +124,11 @@ public class MarcaDao {
 	public Marca updaet(Marca marca) {
 		
 		if(!marcaIsValid(marca)) {
-			throw new DaoException("Marca com dados incompletos!", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("Marca com dados incompletos!", ErrorCode.BAD_REQUEST);
 		}
 		
 		if(marca.getId() <= 0) {
-			throw new DaoException("O id precisa ser maior que zero!", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("O id precisa ser maior que zero!", ErrorCode.BAD_REQUEST);
 		}
 		
 		EntityManager em = JpaUtil.getEntityManager();
@@ -142,10 +142,10 @@ public class MarcaDao {
 			em.getTransaction().commit();
 		}catch (NullPointerException ex) {
 			em.getTransaction().rollback();
-			throw new DaoException("Marca informada para atualização não existe: " + ex.getMessage(), ErrorCode.NOT_FOUND.getCode());
+			throw new DaoException("Marca informada para atualização não existe: " + ex.getMessage(), ErrorCode.NOT_FOUND);
 		}catch (RuntimeException ex) {
 			em.getTransaction().rollback();
-			throw new DaoException("Erro ao atualizar marca no Banco de dados: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao atualizar marca no Banco de dados: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
@@ -157,7 +157,7 @@ public class MarcaDao {
 	public Marca delete(Long id) {
 		
 		if(id <= 0) {
-			throw new DaoException("O id precisa ser maior que zero!", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("O id precisa ser maior que zero!", ErrorCode.BAD_REQUEST);
 		}
 		
 		EntityManager em = JpaUtil.getEntityManager();
@@ -170,10 +170,10 @@ public class MarcaDao {
 			em.getTransaction().commit();
 		}catch (NullPointerException ex) {
 			em.getTransaction().rollback();
-			throw new DaoException("Marca informada para exclusão não existe: " + ex.getMessage(), ErrorCode.NOT_FOUND.getCode());
+			throw new DaoException("Marca informada para exclusão não existe: " + ex.getMessage(), ErrorCode.NOT_FOUND);
 		}catch (RuntimeException ex) {
 			em.getTransaction().rollback();
-			throw new DaoException("Erro ao excluir marca do banco de dados: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao excluir marca do banco de dados: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
@@ -188,7 +188,7 @@ public class MarcaDao {
 				return false;
 			}
 		}catch (NullPointerException ex) {
-			throw new DaoException("Marca com dados incompletos!", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("Marca com dados incompletos!", ErrorCode.BAD_REQUEST);
 		}
 		
 		return true;

@@ -18,7 +18,7 @@ public class ProdutoDao {
 		try {
 			produtos = em.createQuery("from Produto p", Produto.class).getResultList();
 		}catch (RuntimeException ex) {
-			throw new DaoException("Erro ao listar produtos: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao listar produtos: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
@@ -32,19 +32,19 @@ public class ProdutoDao {
 		Produto produto = null;
 		
 		if(id <= 0) {
-			throw new DaoException("O id precisa ser maior que zero!", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("O id precisa ser maior que zero!", ErrorCode.BAD_REQUEST);
 		}
 		
 		try {
 			produto = em.find(Produto.class, id);
 		}catch (RuntimeException ex) {
-			throw new DaoException("Erro ao buscar produto por id no BD: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao buscar produto por id no BD: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
 		
 		if(produto == null) {
-			throw new DaoException("Produto de id " + id + " não encontrado!", ErrorCode.NOT_FOUND.getCode());
+			throw new DaoException("Produto de id " + id + " não encontrado!", ErrorCode.NOT_FOUND);
 		}
 		
 		return produto;
@@ -61,13 +61,13 @@ public class ProdutoDao {
 					.setMaxResults(maxResults)
 					.getResultList();
 		}catch (RuntimeException ex) {
-			throw new DaoException("Erro ao buscar produtos com paginação: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao buscar produtos com paginação: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
 		
 		if(produtos.isEmpty()) {
-			throw new DaoException("A paginação não retornou elementos!", ErrorCode.NOT_FOUND.getCode());
+			throw new DaoException("A paginação não retornou elementos!", ErrorCode.NOT_FOUND);
 		}
 		
 		return produtos;
@@ -82,13 +82,13 @@ public class ProdutoDao {
 					.setParameter("name", "%" + name + "%")
 					.getResultList();
 		}catch (RuntimeException ex) {
-			throw new DaoException("Erro ao buscar produto por nome: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao buscar produto por nome: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
 		
 		if(produtos.isEmpty()) {
-			throw new DaoException("A busca não retornou elementos!", ErrorCode.NOT_FOUND.getCode());
+			throw new DaoException("A busca não retornou elementos!", ErrorCode.NOT_FOUND);
 		}
 		
 		return produtos;
@@ -99,7 +99,7 @@ public class ProdutoDao {
 		EntityManager em = JpaUtil.getEntityManager();
 		
 		if(!produtoIsValid(produto)) {
-			throw new DaoException("Produto com dados incompletos!", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("Produto com dados incompletos!", ErrorCode.BAD_REQUEST);
 		}
 		
 		try {
@@ -108,7 +108,7 @@ public class ProdutoDao {
 			em.getTransaction().commit();
 		}catch (RuntimeException ex) {
 			em.getTransaction().rollback();
-			throw new DaoException("Erro ao salvar produto no BD: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao salvar produto no BD: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
@@ -122,11 +122,11 @@ public class ProdutoDao {
 		Produto produtoManaged = null;
 		
 		if(produto.getId() <= 0) {
-			throw new DaoException("O id precisa ser maior que zero!", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("O id precisa ser maior que zero!", ErrorCode.BAD_REQUEST);
 		}
 		
 		if(!produtoIsValid(produto)) {
-			throw new DaoException("Produto com dados incompletos!", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("Produto com dados incompletos!", ErrorCode.BAD_REQUEST);
 		}
 		
 		try {
@@ -137,10 +137,10 @@ public class ProdutoDao {
 			em.getTransaction().commit();
 		}catch (NullPointerException ex) {
 			em.getTransaction().rollback();
-			throw new DaoException("Produto informado para atualização não existe: " + ex.getMessage(), ErrorCode.NOT_FOUND.getCode());
+			throw new DaoException("Produto informado para atualização não existe: " + ex.getMessage(), ErrorCode.NOT_FOUND);
 		}catch (RuntimeException ex) {
 			em.getTransaction().rollback();
-			throw new DaoException("Erro ao atualizar produto no banco de dados: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao atualizar produto no banco de dados: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
@@ -153,7 +153,7 @@ public class ProdutoDao {
 		Produto produto = null;
 		
 		if(id <= 0 ) {
-			throw new DaoException("O id precisa ser maior que zero!", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("O id precisa ser maior que zero!", ErrorCode.BAD_REQUEST);
 		}
 		
 		try {
@@ -163,10 +163,10 @@ public class ProdutoDao {
 			em.getTransaction().commit();
 		}catch (IllegalArgumentException ex) {
 			em.getTransaction().rollback();
-			throw new DaoException("Produto informado para exclusão não existe: " + ex.getMessage(), ErrorCode.NOT_FOUND.getCode());
+			throw new DaoException("Produto informado para exclusão não existe: " + ex.getMessage(), ErrorCode.NOT_FOUND);
 		}catch (RuntimeException ex) {
 			em.getTransaction().rollback();
-			throw new DaoException("Erro ao remover produto do BD: " + ex.getMessage(), ErrorCode.SERVER_ERROR.getCode());
+			throw new DaoException("Erro ao remover produto do BD: " + ex.getMessage(), ErrorCode.SERVER_ERROR);
 		}finally {
 			em.close();
 		}
@@ -180,7 +180,7 @@ public class ProdutoDao {
 				return false;
 			}
 		}catch (NullPointerException ex) {
-			throw new DaoException("Produto com dados incompletos", ErrorCode.BAD_REQUEST.getCode());
+			throw new DaoException("Produto com dados incompletos", ErrorCode.BAD_REQUEST);
 		}
 		
 		return true;

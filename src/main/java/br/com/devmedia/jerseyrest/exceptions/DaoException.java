@@ -6,9 +6,9 @@ public class DaoException extends RuntimeException {
 	
 	private Integer code;
 
-	public DaoException(String message, Integer code) {
+	public DaoException(String message, ErrorCode code) {
 		super(message);
-		this.code = code;
+		this.code = code.getCode();
 	}
 	
 	public Integer getCode() {
