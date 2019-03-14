@@ -1,4 +1,4 @@
-package br.com.devmedia.jerseyrest.resource;
+package br.com.devmedia.jerseyrest.resource.filter;
 
 import javax.ws.rs.QueryParam;
 

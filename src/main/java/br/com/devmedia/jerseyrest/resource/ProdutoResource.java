@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import br.com.devmedia.jerseyrest.model.domain.Produto;
+import br.com.devmedia.jerseyrest.resource.filter.FilterBean;
 import br.com.devmedia.jerseyrest.service.ProdutoService;
 
 @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")

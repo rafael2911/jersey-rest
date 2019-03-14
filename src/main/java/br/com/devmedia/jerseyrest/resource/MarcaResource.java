@@ -16,6 +16,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import br.com.devmedia.jerseyrest.model.domain.Marca;
+import br.com.devmedia.jerseyrest.resource.filter.AcessoRestrito;
+import br.com.devmedia.jerseyrest.resource.filter.FilterBean;
 import br.com.devmedia.jerseyrest.service.MarcaService;
 
 @Path("/marcas")
@@ -27,7 +29,7 @@ public class MarcaResource {
 	
 	@GET
 	public List<Marca> getMarcas(@BeanParam FilterBean filterBean){
-		
+		System.out.println("Retornando todas as marcas!!!");
 		if(filterBean.getOffset() >= 0 && filterBean.getLimit() > 0) {
 			return service.findByPagination(filterBean.getOffset(), filterBean.getLimit());
 		}
@@ -47,6 +49,7 @@ public class MarcaResource {
 	}
 	
 	@POST
+	@AcessoRestrito
 	public Response save(Marca marca) {
 		marca = service.save(marca);
 		return Response.status(Status.CREATED)
@@ -55,6 +58,7 @@ public class MarcaResource {
 	}
 	
 	@PUT
+	@AcessoRestrito
 	@Path("/{marcaId}")
 	public Response update(@PathParam("marcaId") Long id, Marca marca) {
 		marca.setId(id);
@@ -63,6 +67,7 @@ public class MarcaResource {
 	}
 	
 	@DELETE
+	@AcessoRestrito
 	@Path("/{marcaId}")
 	public Response delete(@PathParam("marcaId") Long id) {
 		service.delete(id);
