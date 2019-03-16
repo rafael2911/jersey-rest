@@ -7,9 +7,11 @@ import java.lang.annotation.Target;
 
 import javax.ws.rs.NameBinding;
 
+import br.com.devmedia.jerseyrest.model.domain.TipoUsuario;
+
 @NameBinding
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface AcessoRestrito {
-
+	TipoUsuario[] value() default {TipoUsuario.CLIENTE, TipoUsuario.FUNCIONARIO, TipoUsuario.ADMINISTRADOR};
 }

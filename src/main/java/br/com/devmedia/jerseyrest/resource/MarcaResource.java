@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import br.com.devmedia.jerseyrest.model.domain.Marca;
+import br.com.devmedia.jerseyrest.model.domain.TipoUsuario;
 import br.com.devmedia.jerseyrest.resource.filter.AcessoRestrito;
 import br.com.devmedia.jerseyrest.resource.filter.FilterBean;
 import br.com.devmedia.jerseyrest.service.MarcaService;
@@ -49,7 +50,7 @@ public class MarcaResource {
 	}
 	
 	@POST
-	@AcessoRestrito
+	@AcessoRestrito({TipoUsuario.FUNCIONARIO, TipoUsuario.ADMINISTRADOR})
 	public Response save(Marca marca) {
 		marca = service.save(marca);
 		return Response.status(Status.CREATED)
@@ -58,7 +59,7 @@ public class MarcaResource {
 	}
 	
 	@PUT
-	@AcessoRestrito
+	@AcessoRestrito({TipoUsuario.FUNCIONARIO, TipoUsuario.ADMINISTRADOR})
 	@Path("/{marcaId}")
 	public Response update(@PathParam("marcaId") Long id, Marca marca) {
 		marca.setId(id);
@@ -67,7 +68,7 @@ public class MarcaResource {
 	}
 	
 	@DELETE
-	@AcessoRestrito
+	@AcessoRestrito({TipoUsuario.ADMINISTRADOR})
 	@Path("/{marcaId}")
 	public Response delete(@PathParam("marcaId") Long id) {
 		service.delete(id);

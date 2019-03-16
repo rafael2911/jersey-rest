@@ -16,6 +16,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import br.com.devmedia.jerseyrest.model.domain.Produto;
+import br.com.devmedia.jerseyrest.model.domain.TipoUsuario;
+import br.com.devmedia.jerseyrest.resource.filter.AcessoRestrito;
 import br.com.devmedia.jerseyrest.resource.filter.FilterBean;
 import br.com.devmedia.jerseyrest.service.ProdutoService;
 
@@ -46,12 +48,14 @@ public class ProdutoResource {
 	}
 	
 	@POST
+	@AcessoRestrito
 	public Response salvar(@PathParam("marcaId") Long marcaId, Produto produto) {
 		service.save(marcaId, produto);
 		return Response.status(Status.CREATED).entity(produto).build();
 	}
 	
 	@PUT
+	@AcessoRestrito({TipoUsuario.FUNCIONARIO, TipoUsuario.ADMINISTRADOR})
 	@Path("/{produtoId}")
 	public void atualizar(@PathParam("marcaId") Long marcaId, @PathParam("produtoId") Long produtoId, Produto produto) {
 		produto.setId(produtoId);
@@ -59,6 +63,7 @@ public class ProdutoResource {
 	}
 	
 	@DELETE
+	@AcessoRestrito({TipoUsuario.ADMINISTRADOR})
 	@Path("/{produtoId}")
 	public void remover(@PathParam("produtoId") Long produtoId) {
 		service.delete(produtoId);

@@ -9,15 +9,15 @@ public class UsuarioService {
 	
 	private final UsuarioDao dao = new UsuarioDao();
 	
-	public boolean validarUsuario(Usuario usuario) {
+	public Usuario validarUsuario(Usuario usuario) {
 		
 		try {
-			dao.obterUsuario(usuario);
+			usuario = dao.obterUsuario(usuario);
 		}catch (NoResultException ex) {
-			return false;
+			return null;
 		}
 		
-		return true;
+		return usuario;
 		
 	}
 	

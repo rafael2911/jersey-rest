@@ -1,6 +1,8 @@
 package br.com.devmedia.jerseyrest.model.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +16,9 @@ public class Usuario {
 	
 	private String username;
 	private String password;
+	
+	@Enumerated(EnumType.STRING)
+	private TipoUsuario tipoUsuario;
 	
 	public Long getId() {
 		return id;
@@ -32,6 +37,12 @@ public class Usuario {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public TipoUsuario getTipoUsuario() {
+		return tipoUsuario;
+	}
+	public void setTipoUsuario(TipoUsuario tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
 	}
 	
 }
